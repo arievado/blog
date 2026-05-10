@@ -1,37 +1,23 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostList from "../components/PostList.astro";
-import { getAllPosts } from "../utils/content";
-import { SITE_AVATAR, SITE_BIO } from "../utils/constants";
+import Sidebar from "../components/Sidebar.astro";
+import { getAllPosts, getAllCategories, getAllTags } from "../utils/content";
 
-const base = import.meta.env.BASE_URL;
-const avatarSrc = `${base}/${SITE_AVATAR.replace(/^\//, "")}`;
 const posts = await getAllPosts();
+const categories = await getAllCategories();
+const tags = await getAllTags();
 ---
 
 <BaseLayout>
-  <section class="mb-8 flex flex-col items-center gap-4 pt-4 text-center sm:flex-row sm:text-left">
-    <img
-      id="hero-avatar"
-      src={avatarSrc}
-      alt="作者头像"
-      data-placeholder="作者"
-      class="h-20 w-20 rounded-full object-cover"
-      width="80"
-      height="80"
+  <div class="flex flex-col gap-8 lg:flex-row">
+    <Sidebar
+      postCount={posts.length}
+      categoryCount={categories.length}
+      tagCount={tags.length}
     />
-    <p class="max-w-lg text-gray-600 leading-relaxed dark:text-gray-400">{SITE_BIO}</p>
-  </section>
-  <PostList posts={posts} />
-
-  <script is:inline>
-    document.getElementById("hero-avatar")?.addEventListener("error", function (e) {
-      const img = /** @type {HTMLImageElement} */ (e.target);
-      const span = document.createElement("span");
-      span.textContent = img.dataset.placeholder || "";
-      span.className =
-        "inline-flex h-20 w-20 items-center justify-center rounded-full bg-gray-200 text-2xl font-bold text-gray-400 dark:bg-gray-700 dark:text-gray-300";
-      img.replaceWith(span);
-    });
-  </script>
+    <main class="flex-1 min-w-0">
+      <PostList posts={posts} />
+    </main>
+  </div>
 </BaseLayout>

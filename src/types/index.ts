@@ -25,6 +25,12 @@ export interface Tag {
 
 export type Theme = "light" | "dark";
 
+export interface SocialLink {
+  name: string;
+  url: string;
+  icon: string;
+}
+
 export interface FriendLink {
   name: string;
   url: string;

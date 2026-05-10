@@ -8,3 +8,4 @@ export const POSTS_PER_PAGE = 10;
 export const GITHUB_USERNAME = "arievado";
 export const SITE_AVATAR = siteConfig.avatar;
 export const SITE_BIO = siteConfig.bio;
+export const SITE_SOCIAL_LINKS = siteConfig.socialLinks;

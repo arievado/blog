@@ -1,0 +1,117 @@
+---
+import { SITE_AVATAR, SITE_AUTHOR, SITE_BIO, SITE_SOCIAL_LINKS } from "../utils/constants";
+
+export interface Props {
+  postCount: number;
+  categoryCount: number;
+  tagCount: number;
+}
+
+const base = import.meta.env.BASE_URL;
+const avatarSrc = `${base}/${SITE_AVATAR.replace(/^\//, "")}`;
+const { postCount, categoryCount, tagCount } = Astro.props;
+
+const navItems = [
+  { label: "首页", href: `${base}/` },
+  { label: "归档", href: `${base}/archive/` },
+  { label: "分类", href: `${base}/blog/category/` },
+  { label: "标签", href: `${base}/blog/tag/` },
+  { label: "关于", href: `${base}/about/` },
+  { label: "友链", href: `${base}/friends/` },
+];
+---
+
+<aside class="sidebar flex w-full shrink-0 flex-col items-center gap-5 rounded-xl border border-gray-200 bg-white p-6 text-center dark:border-gray-800 dark:bg-gray-900 lg:w-72 lg:items-start lg:text-left">
+  <!-- Profile -->
+  <div class="flex flex-col items-center gap-3 lg:items-start">
+    <img
+      id="sidebar-avatar"
+      src={avatarSrc}
+      alt={SITE_AUTHOR}
+      data-placeholder={SITE_AUTHOR.charAt(0)}
+      class="h-24 w-24 rounded-full object-cover"
+      width="96"
+      height="96"
+    />
+    <h2 class="text-xl font-bold text-gray-900 dark:text-white">{SITE_AUTHOR}</h2>
+    <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">{SITE_BIO}</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="flex gap-6 text-sm">
+    <div class="flex flex-col items-center lg:items-start">
+      <span class="text-lg font-bold text-gray-900 dark:text-white">{postCount}</span>
+      <span class="text-gray-500 dark:text-gray-400">篇文章</span>
+    </div>
+    <div class="flex flex-col items-center lg:items-start">
+      <span class="text-lg font-bold text-gray-900 dark:text-white">{categoryCount}</span>
+      <span class="text-gray-500 dark:text-gray-400">个分类</span>
+    </div>
+    <div class="flex flex-col items-center lg:items-start">
+      <span class="text-lg font-bold text-gray-900 dark:text-white">{tagCount}</span>
+      <span class="text-gray-500 dark:text-gray-400">个标签</span>
+    </div>
+  </div>
+
+  <!-- Social links -->
+  {
+    SITE_SOCIAL_LINKS.length > 0 && (
+      <div class="flex gap-3">
+        {SITE_SOCIAL_LINKS.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+            title={link.name}
+          >
+            {link.icon === "github" && (
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+              </svg>
+            )}
+            {link.icon === "email" && (
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="M22 4L12 13 2 4" />
+              </svg>
+            )}
+            {link.icon === "rss" && (
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6.18 15.64a2.18 2.18 0 010 4.36 2.18 2.18 0 010-4.36M4 4.44A15.56 15.56 0 0119.56 20h-2.83A12.73 12.73 0 004 7.27V4.44m0 5.66A9.9 9.9 0 0113.9 20h-2.83A7.07 7.07 0 004 12.93v-2.83z" />
+              </svg>
+            )}
+          </a>
+        ))}
+      </div>
+    )
+  }
+
+  <!-- Navigation -->
+  <nav class="w-full border-t border-gray-200 pt-5 dark:border-gray-800">
+    <ul class="flex flex-col gap-1">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class="block rounded-md px-3 py-1.5 text-sm text-gray-600 hover:translate-x-1 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-transform"
+          >
+            <span class="mr-2 text-gray-300 dark:text-gray-600">—</span>
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</aside>
+
+<script is:inline>
+  document.getElementById("sidebar-avatar")?.addEventListener("error", function (e) {
+    const img = /** @type {HTMLImageElement} */ (e.target);
+    const span = document.createElement("span");
+    span.textContent = img.dataset.placeholder || "";
+    span.className =
+      "inline-flex h-24 w-24 items-center justify-center rounded-full bg-gray-200 text-2xl font-bold text-gray-400 dark:bg-gray-700 dark:text-gray-300";
+    img.replaceWith(span);
+  });
+</script>
