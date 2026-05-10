@@ -4,7 +4,7 @@ date: 2026-05-10
 category: 前端
 tags: ["Astro", "博客", "GitHub Pages", "静态站点"]
 description: "从零开始使用 Astro 搭建个人博客并部署到 GitHub Pages 的完整指南，包含 TailwindCSS、Pagefind 搜索、Giscus 评论的集成。"
-draft: true
+draft: false
 ---
 
 ## 为什么选 Astro
