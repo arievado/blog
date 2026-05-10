@@ -104,4 +104,24 @@ describe("Header.astro (RED)", () => {
     expect(avatarIdx).toBeGreaterThan(0);
     expect(avatarIdx).toBeLessThan(mobileMenuIdx);
   });
+
+  // ── CR-005: 顶层导航项图标 ──
+
+  it("topLevelItems each have an icon field with SVG content", () => {
+    const src = readHeaderSource();
+    expect(src).toContain("icon:");
+    // dropdownItems has 3 icons, topLevelItems should add 2 more = at least 5 total
+    const iconMatches = (src.match(/icon:\s*`/g) || []);
+    expect(iconMatches.length).toBeGreaterThanOrEqual(5);
+  });
+
+  it("topLevelItems icons use stroke=currentColor for color consistency", () => {
+    const src = readHeaderSource();
+    expect(src).toContain('stroke="currentColor"');
+  });
+
+  it("desktop and mobile topLevel navigation renders icons via set:html", () => {
+    const src = readHeaderSource();
+    expect(src).toContain("set:html={item.icon}");
+  });
 });

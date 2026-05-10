@@ -29,14 +29,25 @@ describe("Sidebar.astro (RED)", () => {
     expect(src).toContain("SITE_SOCIAL_LINKS");
   });
 
-  it("contains nav links to at least 4 target pages", () => {
+  it("contains nav links for 首页/关于/友链 only (no 分类/标签/归档)", () => {
     const src = readSource("Sidebar.astro");
-    expect(src).toContain("/archive/");
     expect(src).toContain("/about/");
-    expect(src).toContain("/blog/category/");
-    expect(src).toContain("/blog/tag/");
     expect(src).toContain("/friends/");
     expect(src).toContain("navItems");
+    // 分类/标签/归档 should NOT be in sidebar nav (they're in Header dropdown)
+    expect(src).not.toMatch(/\/blog\/category\//);
+    expect(src).not.toMatch(/\/blog\/tag\//);
+    expect(src).not.toMatch(/\/archive\//);
+  });
+
+  it("nav items each have an icon field with SVG", () => {
+    const src = readSource("Sidebar.astro");
+    // The navItems should include icon fields
+    expect(src).toContain("icon:");
+    // Should use set:html or Fragment for icon rendering
+    expect(src).toMatch(/set:html=\{item\.icon\}/);
+    // Should NOT use dash decoration anymore
+    expect(src).not.toContain("—");
   });
 
   it("has avatar img with rounded-full class and inline error handling script", () => {
