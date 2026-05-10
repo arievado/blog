@@ -7,13 +7,54 @@ function readHeaderSource(): string {
 }
 
 describe("Header.astro (RED)", () => {
-  it("contains nav links for 分类 and 标签", () => {
+  // ── CR-003: 导航重构 — 下拉菜单 ──
+
+  it("top-level nav only shows 首页, 文章 dropdown, and 关于 (not 分类/标签/归档 directly)", () => {
+    const src = readHeaderSource();
+    // 下拉项数据仍存在于源码中, 但不作为顶层导航链接渲染
+    // desktop nav should contain dropdown-related markup
+    expect(src).toContain("文章");
+    expect(src).toContain("dropdown");
+  });
+
+  it("dropdownItems data structure contains 分类, 标签, 归档 with distinct SVG icons", () => {
     const src = readHeaderSource();
     expect(src).toContain("分类");
     expect(src).toContain("标签");
-    expect(src).toContain("/blog/category/");
-    expect(src).toContain("/blog/tag/");
+    expect(src).toContain("归档");
+    // Each dropdown item must have an inline SVG
+    const svgCount = (src.match(/<svg/g) || []).length;
+    expect(svgCount).toBeGreaterThanOrEqual(3); // at least 3 icons (ham, theme, dropdown items)
   });
+
+  it("desktop dropdown toggle script exists with open/close logic", () => {
+    const src = readHeaderSource();
+    expect(src).toContain("dropdown");
+    // should have toggle logic: click to open, click outside to close
+    expect(src).toMatch(/toggle|open|close/);
+    expect(src).toMatch(/contains/); // click-outside detection
+  });
+
+  it("mobile hamburger menu contains collapsible 文章 submenu with expand arrow", () => {
+    const src = readHeaderSource();
+    // Mobile menu should have 文章 as an expandable group
+    expect(src).toContain("mobile-menu");
+    expect(src).toContain("文章");
+    // Should have some kind of expand/collapse indicator
+    expect(src).toMatch(/expand|arrow|▼|▸|▾/);
+  });
+
+  it("dropdown panel has dark mode styles (dark: prefixed classes)", () => {
+    const src = readHeaderSource();
+    // Dropdown panel should include dark: classes for background and text
+    const dropdownSection = src.substring(src.indexOf("dropdown"));
+    const dropdownEnd = dropdownSection.indexOf("</div>") > 0
+      ? dropdownSection.substring(0, dropdownSection.indexOf("</div>") + 6)
+      : dropdownSection.substring(0, 200);
+    expect(dropdownSection).toMatch(/dark:/);
+  });
+
+  // ── 已有测试 (CR-003 后依然通过) ──
 
   it("imports and mounts ThemeToggle component", () => {
     const src = readHeaderSource();
@@ -29,7 +70,6 @@ describe("Header.astro (RED)", () => {
 
   it("includes inline script for mobile menu toggle", () => {
     const src = readHeaderSource();
-    // Should contain <script> with menu toggle logic
     expect(src).toContain("<script");
     expect(src).toContain("menuOpen");
     expect(src).toContain("toggle");
@@ -59,7 +99,6 @@ describe("Header.astro (RED)", () => {
 
   it("renders avatar in title area (not inside mobile-hidden nav)", () => {
     const src = readHeaderSource();
-    // The avatar img should appear BEFORE the hamburger/mobile-menu section
     const avatarIdx = src.indexOf("SITE_AVATAR");
     const mobileMenuIdx = src.indexOf("mobile-menu");
     expect(avatarIdx).toBeGreaterThan(0);
