@@ -2,21 +2,23 @@
 import { SITE_AVATAR, SITE_TITLE } from "../utils/constants";
 import { ThemeToggle } from "../components/ThemeToggle";
 
+const base = import.meta.env.BASE_URL;
+const avatarSrc = `${base}/${SITE_AVATAR.replace(/^\//, "")}`;
 const navItems = [
-  { label: "首页", href: "/" },
-  { label: "分类", href: "/blog/category/" },
-  { label: "标签", href: "/blog/tag/" },
-  { label: "归档", href: "/archive" },
-  { label: "关于", href: "/about" },
+  { label: "首页", href: `${base}/` },
+  { label: "分类", href: `${base}/blog/category/` },
+  { label: "标签", href: `${base}/blog/tag/` },
+  { label: "归档", href: `${base}/archive/` },
+  { label: "关于", href: `${base}/about/` },
 ];
 ---
 
 <header class="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
   <nav class="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 sm:px-6">
-    <a href="/" class="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white no-underline">
+    <a href={`${base}/`} class="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white no-underline">
       <img
         id="header-avatar"
-        src={SITE_AVATAR}
+        src={avatarSrc}
         alt={SITE_TITLE}
         data-placeholder={SITE_TITLE.charAt(0)}
         class="h-8 w-8 rounded-full object-cover"

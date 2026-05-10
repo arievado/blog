@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getAllPosts, groupPostsByYear } from "../utils/content";
 import { formatDate } from "../utils/date";
 
+const base = import.meta.env.BASE_URL;
 const posts = await getAllPosts();
 const grouped = groupPostsByYear(posts);
 const years = Array.from(grouped.keys()).sort((a, b) => b - a);
@@ -30,7 +31,7 @@ const years = Array.from(grouped.keys()).sort((a, b) => b - a);
                   {formatDate(post.data.date)}
                 </time>
                 <a
-                  href={`/blog/${post.id}`}
+                  href={`${base}/blog/${post.id}`}
                   class="text-gray-700 hover:text-accent dark:text-gray-300"
                 >
                   {post.data.title}

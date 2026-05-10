@@ -1,6 +1,8 @@
 ---
 import type { Tag } from "../types";
 
+const base = import.meta.env.BASE_URL;
+
 export interface Props {
   tags: Tag[];
 }
@@ -11,7 +13,7 @@ const { tags } = Astro.props;
 <div class="flex flex-wrap gap-2">
   {tags.map(({ name, count }) => (
     <a
-      href={`/blog/tag/${name}`}
+      href={`${base}/blog/tag/${name}`}
       class="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
     >
       {name} <span class="text-xs text-gray-400">({count})</span>

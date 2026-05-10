@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
   site: "https://arievado.github.io",
-  base: "blog",
+  base: "/blog",
   integrations: [tailwind(), preact(), sitemap()],
   output: "static",
   build: {

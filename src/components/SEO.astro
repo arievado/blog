@@ -6,10 +6,12 @@ export interface Props {
   canonicalURL?: string;
 }
 
+const base = import.meta.env.BASE_URL;
+
 const {
   title,
   description = "系统化沉淀知识，串联思考。",
-  ogImage = "/images/default-og.png",
+  ogImage = `${base}/images/default-og.png`,
   canonicalURL,
 } = Astro.props;
 

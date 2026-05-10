@@ -1,6 +1,8 @@
 ---
 import type { Category } from "../types";
 
+const base = import.meta.env.BASE_URL;
+
 export interface Props {
   categories: Category[];
 }
@@ -12,7 +14,7 @@ const { categories } = Astro.props;
   {categories.map(({ name, count }) => (
     <li>
       <a
-        href={`/blog/category/${name}`}
+        href={`${base}/blog/category/${name}`}
         class="flex items-center justify-between rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
       >
         <span class="text-gray-700 dark:text-gray-300">{name}</span>
