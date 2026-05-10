@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PostList from "../../../components/PostList.astro";
+import { getPostsByTag, getAllTags } from "../../../utils/content";
+
+export async function getStaticPaths() {
+  const tags = await getAllTags();
+  return tags.map((t) => ({ params: { tag: t.name } }));
+}
+
+const { tag } = Astro.params;
+const posts = await getPostsByTag(tag);
+---
+
+<BaseLayout title={`标签：${tag}`}>
+  <header class="mb-8">
+    <h1 class="text-2xl font-bold sm:text-3xl">标签：#{tag}</h1>
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">共 {posts.length} 篇文章</p>
+  </header>
+  {posts.length === 0 ? (
+    <p class="py-12 text-center text-gray-400 dark:text-gray-500">该标签下暂无文章</p>
+  ) : (
+    <PostList posts={posts} />
+  )}
+</BaseLayout>

@@ -1,0 +1,70 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import GiscusComments from "../components/GiscusComments.astro";
+import BackToTop from "../components/BackToTop.astro";
+import { formatDate } from "../utils/date";
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { title, date, updated, category, tags, description } = post.data;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="prose prose-gray mx-auto max-w-none dark:prose-invert">
+    <header class="mb-8 border-b border-gray-200 pb-6 dark:border-gray-800">
+      <h1 class="mb-2 text-3xl font-bold sm:text-4xl">{title}</h1>
+      <div class="flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+        <time datetime={date.toISOString()}>
+          {formatDate(date)}
+        </time>
+        {updated && (
+          <span>（更新于 {formatDate(updated)}）</span>
+        )}
+        <span>&middot;</span>
+        <a
+          href={`/blog/category/${category}`}
+          class="text-accent hover:underline"
+        >
+          {category}
+        </a>
+      </div>
+      {tags.length > 0 && (
+        <div class="mt-3 flex flex-wrap gap-1">
+          {tags.map((tag: string) => (
+            <a
+              href={`/blog/tag/${tag}`}
+              class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+            >
+              #{tag}
+            </a>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div>
+      <slot name="content" />
+    </div>
+  </article>
+
+  <aside class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-800">
+    <GiscusComments />
+  </aside>
+
+  <BackToTop />
+
+  <script is:inline>
+    document.querySelectorAll("article img").forEach((img) => {
+      img.addEventListener("error", () => {
+        const span = document.createElement("span");
+        span.textContent = "图片未找到";
+        span.className = "text-gray-400 italic";
+        img.replaceWith(span);
+      });
+    });
+  </script>
+</BaseLayout>

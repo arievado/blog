@@ -1,0 +1,108 @@
+---
+import { SITE_AVATAR, SITE_TITLE } from "../utils/constants";
+import { ThemeToggle } from "../components/ThemeToggle";
+
+const navItems = [
+  { label: "首页", href: "/" },
+  { label: "分类", href: "/blog/category/" },
+  { label: "标签", href: "/blog/tag/" },
+  { label: "归档", href: "/archive" },
+  { label: "关于", href: "/about" },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
+  <nav class="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 sm:px-6">
+    <a href="/" class="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white no-underline">
+      <img
+        id="header-avatar"
+        src={SITE_AVATAR}
+        alt={SITE_TITLE}
+        data-placeholder={SITE_TITLE.charAt(0)}
+        class="h-8 w-8 rounded-full object-cover"
+        width="32"
+        height="32"
+      />
+      {SITE_TITLE}
+    </a>
+
+    <!-- Desktop navigation links (hidden on mobile) -->
+    <ul class="hidden items-center gap-1 sm:gap-2 md:flex">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class="rounded-md px-2 py-1 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- ThemeToggle (always visible) + hamburger (mobile only) -->
+    <div class="flex items-center gap-1">
+      <ThemeToggle client:load />
+      <button
+        id="hamburger-btn"
+        class="hamburger rounded-md p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 md:hidden"
+        aria-label="菜单"
+      >
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu dropdown (hidden by default, toggled by hamburger) -->
+  <div id="mobile-menu" class="hidden border-t border-gray-200 bg-white px-4 pb-4 dark:border-gray-800 dark:bg-gray-950 md:hidden">
+    <ul class="flex flex-col gap-1 pt-2">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class="block rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script is:inline>
+  const btn = document.getElementById("hamburger-btn");
+  const menu = document.getElementById("mobile-menu");
+  let menuOpen = false;
+
+  btn?.addEventListener("click", () => {
+    menuOpen = !menuOpen;
+    menu?.classList.toggle("hidden", !menuOpen);
+  });
+
+  menu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      menuOpen = false;
+      menu?.classList.add("hidden");
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const target = e.target;
+    if (menuOpen && target && !btn?.contains(target) && !menu?.contains(target)) {
+      menuOpen = false;
+      menu?.classList.add("hidden");
+    }
+  });
+
+  document.getElementById("header-avatar")?.addEventListener("error", function (e) {
+    const img = /** @type {HTMLImageElement} */ (e.target);
+    const span = document.createElement("span");
+    span.textContent = img.dataset.placeholder || "";
+    span.className =
+      "inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-sm font-bold text-gray-500 dark:bg-gray-700 dark:text-gray-300";
+    img.replaceWith(span);
+  });
+</script>

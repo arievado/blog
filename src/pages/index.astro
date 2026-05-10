@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostList from "../components/PostList.astro";
+import { getAllPosts } from "../utils/content";
+import { SITE_AVATAR, SITE_BIO } from "../utils/constants";
+
+const posts = await getAllPosts();
+---
+
+<BaseLayout>
+  <section class="mb-8 flex flex-col items-center gap-4 pt-4 text-center sm:flex-row sm:text-left">
+    <img
+      id="hero-avatar"
+      src={SITE_AVATAR}
+      alt="作者头像"
+      data-placeholder="作者"
+      class="h-20 w-20 rounded-full object-cover"
+      width="80"
+      height="80"
+    />
+    <p class="max-w-lg text-gray-600 leading-relaxed dark:text-gray-400">{SITE_BIO}</p>
+  </section>
+  <PostList posts={posts} />
+
+  <script is:inline>
+    document.getElementById("hero-avatar")?.addEventListener("error", function (e) {
+      const img = /** @type {HTMLImageElement} */ (e.target);
+      const span = document.createElement("span");
+      span.textContent = img.dataset.placeholder || "";
+      span.className =
+        "inline-flex h-20 w-20 items-center justify-center rounded-full bg-gray-200 text-2xl font-bold text-gray-400 dark:bg-gray-700 dark:text-gray-300";
+      img.replaceWith(span);
+    });
+  </script>
+</BaseLayout>

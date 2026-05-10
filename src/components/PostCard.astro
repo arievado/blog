@@ -1,0 +1,40 @@
+---
+import { formatDate } from "../utils/date";
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { title, date, category, tags, description } = post.data;
+---
+
+<article class="rounded-lg border border-gray-200 p-4 transition hover:border-gray-300 dark:border-gray-800 dark:hover:border-gray-700 sm:p-6">
+  <a href={`/blog/${post.id}`} class="no-underline">
+    <h2 class="mb-2 line-clamp-1 text-xl font-semibold text-gray-900 dark:text-white">{title}</h2>
+  </a>
+  <p class="mb-3 line-clamp-2 text-sm text-gray-500 dark:text-gray-400">{description}</p>
+  <div class="flex flex-wrap items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
+    <time datetime={date.toISOString()}>{formatDate(date)}</time>
+    <span>&middot;</span>
+    <a
+      href={`/blog/category/${category}`}
+      class="text-accent hover:underline"
+    >
+      {category}
+    </a>
+    {tags.length > 0 && (
+      <span class="flex flex-wrap gap-1">
+        {tags.map((tag: string) => (
+          <a
+            href={`/blog/tag/${tag}`}
+            class="rounded-full bg-gray-100 px-2 py-0.5 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
+          >
+            #{tag}
+          </a>
+        ))}
+      </span>
+    )}
+  </div>
+</article>

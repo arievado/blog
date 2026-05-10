@@ -1,0 +1,26 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const seen = new Map<string, string>();
+  for (const p of posts) {
+    if (seen.has(p.id)) {
+      throw new Error(`Slug 重复: "${p.id}" 出现在多个文件中`);
+    }
+    seen.set(p.id, p.id);
+  }
+  return posts.map((post: CollectionEntry<"blog">) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BlogPostLayout post={post}>
+  <Content slot="content" />
+</BlogPostLayout>

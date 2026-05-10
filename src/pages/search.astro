@@ -1,0 +1,8 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { SearchBar } from "../components/SearchBar.tsx";
+---
+
+<PageLayout title="搜索" description="搜索所有文章">
+  <SearchBar client:load />
+</PageLayout>

@@ -1,0 +1,10 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { Content, frontmatter } from "../content/about.md";
+---
+
+<PageLayout title={frontmatter.title} description="关于我和这座数字花园">
+  <div class="prose prose-gray dark:prose-invert max-w-none">
+    <Content />
+  </div>
+</PageLayout>

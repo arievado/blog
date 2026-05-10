@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getAllPosts, groupPostsByYear } from "../utils/content";
+import { formatDate } from "../utils/date";
+
+const posts = await getAllPosts();
+const grouped = groupPostsByYear(posts);
+const years = Array.from(grouped.keys()).sort((a, b) => b - a);
+---
+
+<BaseLayout title="归档">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold sm:text-4xl">归档</h1>
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">共 {posts.length} 篇文章</p>
+  </header>
+
+  <div class="space-y-8">
+    {years.map((year) => {
+      const yearPosts = grouped.get(year) || [];
+      return (
+        <section>
+          <h2 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">{year}</h2>
+          <ul class="space-y-2">
+            {yearPosts.map((post) => (
+              <li class="flex items-baseline gap-4">
+                <time
+                  datetime={post.data.date.toISOString()}
+                  class="shrink-0 text-sm text-gray-400 dark:text-gray-500"
+                >
+                  {formatDate(post.data.date)}
+                </time>
+                <a
+                  href={`/blog/${post.id}`}
+                  class="text-gray-700 hover:text-accent dark:text-gray-300"
+                >
+                  {post.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      );
+    })}
+  </div>
+</BaseLayout>

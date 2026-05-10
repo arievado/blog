@@ -1,0 +1,36 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import type { FriendLink } from "../types";
+
+const friends: FriendLink[] = [];
+---
+
+<PageLayout title="友链" description="朋友们的博客和网站">
+  {friends.length === 0 ? (
+    <div class="rounded-lg border border-dashed border-gray-300 p-12 text-center text-gray-400 dark:border-gray-700">
+      <p>暂未添加友链，欢迎交换链接。</p>
+      <p class="mt-2 text-sm">联系我 → GitHub</p>
+    </div>
+  ) : (
+    <div class="grid gap-4 sm:grid-cols-2">
+      {friends.map(({ name, url, avatar, description }) => (
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-4 rounded-lg border border-gray-200 p-4 transition hover:border-gray-300 dark:border-gray-800 dark:hover:border-gray-700"
+        >
+          {avatar && (
+            <img src={avatar} alt={name} class="h-12 w-12 rounded-full" loading="lazy" />
+          )}
+          <div>
+            <p class="font-medium text-gray-900 dark:text-white">{name}</p>
+            {description && (
+              <p class="text-sm text-gray-500 dark:text-gray-400">{description}</p>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
+  )}
+</PageLayout>

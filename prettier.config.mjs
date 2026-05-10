@@ -1,0 +1,18 @@
+export default {
+  semi: true,
+  singleQuote: false,
+  trailingComma: "all",
+  printWidth: 100,
+  tabWidth: 2,
+  arrowParens: "always",
+  plugins: [
+    "prettier-plugin-astro",
+    "prettier-plugin-tailwindcss",
+  ],
+  overrides: [
+    {
+      files: "*.astro",
+      options: { parser: "astro" },
+    },
+  ],
+};

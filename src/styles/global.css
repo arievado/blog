@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 文章正文排版 */
+article.prose {
+  max-width: 75ch;
+}
+
+article.prose pre {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+article.prose img {
+  border-radius: 0.5rem;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 代码块暗色模式 */
+.dark article.prose pre {
+  background-color: #1e293b;
+}
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
