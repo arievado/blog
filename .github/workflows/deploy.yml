@@ -31,6 +31,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm build
+        env:
+          PUBLIC_SITE_URL: https://arievado.github.io/blog
+          PUBLIC_GISCUS_REPO: arievado/blog
+          PUBLIC_GISCUS_REPO_ID: R_kgDOSZT79A
+          PUBLIC_GISCUS_CATEGORY: Announcements
+          PUBLIC_GISCUS_CATEGORY_ID: DIC_kwDOSZT79M4C8t3P
 
       - uses: actions/configure-pages@v5
 
