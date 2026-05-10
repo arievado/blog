@@ -124,4 +124,22 @@ describe("Header.astro (RED)", () => {
     const src = readHeaderSource();
     expect(src).toContain("set:html={item.icon}");
   });
+
+  it("文章 dropdown button has a book SVG icon (both desktop and mobile)", () => {
+    const src = readHeaderSource();
+    // Book icon path distinctive element
+    expect(src).toContain("M4 19.5A2.5 2.5 0 0 1 6.5 17H20");
+    // Desktop dropdown button should have the SVG
+    const desktopBtnSection = src.substring(
+      src.indexOf("dropdown-toggle"),
+      src.indexOf("dropdown-panel")
+    );
+    expect(desktopBtnSection).toContain("<svg");
+    // Mobile button should have the SVG
+    const mobileBtnSection = src.substring(
+      src.indexOf("mobile-articles-toggle"),
+      src.indexOf("mobile-articles-submenu")
+    );
+    expect(mobileBtnSection).toContain("<svg");
+  });
 });
