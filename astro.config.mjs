@@ -4,7 +4,7 @@ import preact from "@astrojs/preact";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: process.env.PUBLIC_SITE_URL || "https://rievado.github.io",
+  site: "https://arievado.github.io",
   base: "blog",
   integrations: [tailwind(), preact(), sitemap()],
   output: "static",
