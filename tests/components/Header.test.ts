@@ -44,14 +44,16 @@ describe("Header.astro (RED)", () => {
     expect(src).toMatch(/expand|arrow|▼|▸|▾/);
   });
 
-  it("dropdown panel has dark mode styles (dark: prefixed classes)", () => {
+  it("desktop dropdown items use same spacing as topLevelItems (gap-1.5, px-2, py-1)", () => {
     const src = readHeaderSource();
-    // Dropdown panel should include dark: classes for background and text
-    const dropdownSection = src.substring(src.indexOf("dropdown"));
-    const dropdownEnd = dropdownSection.indexOf("</div>") > 0
-      ? dropdownSection.substring(0, dropdownSection.indexOf("</div>") + 6)
-      : dropdownSection.substring(0, 200);
-    expect(dropdownSection).toMatch(/dark:/);
+    // Extract the desktop dropdown panel section
+    const panelStart = src.indexOf("dropdown-panel");
+    const panelEnd = src.indexOf("</div>", panelStart);
+    const panelSection = src.substring(panelStart, panelEnd);
+    // Desktop dropdown items should match topLevelItems spacing
+    expect(panelSection).toContain("gap-1.5");
+    expect(panelSection).toContain("px-2");
+    expect(panelSection).toContain("py-1");
   });
 
   // ── 已有测试 (CR-003 后依然通过) ──
