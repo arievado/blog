@@ -63,4 +63,13 @@ describe("Sidebar.astro (RED)", () => {
     const src = readSource("Sidebar.astro");
     expect(src).toContain("dark:");
   });
+
+  it("renders stats in compact inline format: x篇文章 · x个分类 · x个标签", () => {
+    const src = readSource("Sidebar.astro");
+    expect(src).toContain("篇文章");
+    expect(src).toContain("个分类");
+    expect(src).toContain("个标签");
+    // Stats should use &middot; separators (inline format), not the old 3-column layout
+    expect(src).toContain("&middot;");
+  });
 });

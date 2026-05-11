@@ -25,17 +25,13 @@ const { title, date, category, tags, description } = post.data;
     >
       {category}
     </a>
-    {tags.length > 0 && (
-      <span class="flex flex-wrap gap-1">
-        {tags.map((tag: string) => (
-          <a
-            href={`${base}/blog/tag/${tag}`}
-            class="rounded-full bg-gray-100 px-2 py-0.5 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
-          >
-            #{tag}
-          </a>
-        ))}
-      </span>
-    )}
+    {tags.map((tag: string) => (
+      <a
+        href={`${base}/blog/tag/${tag}`}
+        class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-400 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-gray-700"
+      >
+        #{tag}
+      </a>
+    ))}
   </div>
 </article>
