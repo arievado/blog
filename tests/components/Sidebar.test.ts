@@ -64,12 +64,17 @@ describe("Sidebar.astro (RED)", () => {
     expect(src).toContain("dark:");
   });
 
-  it("renders stats in compact inline format: x篇文章 · x个分类 · x个标签", () => {
+  it("renders stats as card with vertical dividers (CR-006)", () => {
     const src = readSource("Sidebar.astro");
     expect(src).toContain("篇文章");
     expect(src).toContain("个分类");
     expect(src).toContain("个标签");
-    // Stats should use &middot; separators (inline format), not the old 3-column layout
-    expect(src).toContain("&middot;");
+    // Card-style container with background and rounded corners
+    expect(src).toMatch(/rounded.*bg-|bg-.*rounded/);
+    // Vertical bar separators between items (not &middot;)
+    expect(src).not.toContain("&middot;");
+    // Numbers should be large and bold
+    expect(src).toContain("text-lg");
+    expect(src).toContain("font-bold");
   });
 });

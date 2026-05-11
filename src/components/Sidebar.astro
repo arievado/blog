@@ -35,8 +35,21 @@ const navItems = [
   </div>
 
   <!-- Stats -->
-  <div class="text-sm text-gray-500 dark:text-gray-400">
-    <span class="font-semibold text-gray-900 dark:text-white">{postCount}</span> 篇文章 &middot; <span class="font-semibold text-gray-900 dark:text-white">{categoryCount}</span> 个分类 &middot; <span class="font-semibold text-gray-900 dark:text-white">{tagCount}</span> 个标签
+  <div class="flex items-center justify-center rounded-lg bg-gray-50 px-3 py-2.5 dark:bg-gray-800/50">
+    <div class="flex flex-col items-center px-3">
+      <span class="text-lg font-bold text-gray-900 dark:text-white">{postCount}</span>
+      <span class="text-xs text-gray-500 dark:text-gray-400">篇文章</span>
+    </div>
+    <span class="text-gray-300 dark:text-gray-600">|</span>
+    <div class="flex flex-col items-center px-3">
+      <span class="text-lg font-bold text-gray-900 dark:text-white">{categoryCount}</span>
+      <span class="text-xs text-gray-500 dark:text-gray-400">个分类</span>
+    </div>
+    <span class="text-gray-300 dark:text-gray-600">|</span>
+    <div class="flex flex-col items-center px-3">
+      <span class="text-lg font-bold text-gray-900 dark:text-white">{tagCount}</span>
+      <span class="text-xs text-gray-500 dark:text-gray-400">个标签</span>
+    </div>
   </div>
 
   <!-- Social links -->
